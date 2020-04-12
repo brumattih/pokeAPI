@@ -2,6 +2,8 @@ const axios = require('axios')
 const user = require('readline-sync')
 var fs = require('fs')
 const pokemon = new Object()
+const pokemonList = []
+
 
 function menu() {
     console.log('--------------------------ESCOLHA--------------------------')
@@ -35,14 +37,28 @@ function displayPoke() {
 
             localPokedex = user.question("Digite 'S' para salver o Pokémon em sua Pokédex Local ou 'N' para encerrar o programa: ").toUpperCase().trim()
 
-            if (localPokedex === "S") {            
+            if (localPokedex === "S") {
                 pokemon.name = name
                 pokemon.type = types
                 pokemon.abilities = abilities
 
-                const pokemonToString = JSON.stringify(pokemon)
-                var filePath = 'data/localPokedex.json'
-                fs.writeFileSync(filePath, pokemonToString)
+
+                const readPokemon = fs.readFileSync('data/localPokedex.json')
+                if (readPokemon.length > 0) {
+                    const pokemonList = JSON.parse(readPokemon)
+                    pokemonList.push(pokemon)
+
+                    const pokemonToString = JSON.stringify(pokemonList)
+                    var filePath = 'data/localPokedex.json'
+                    fs.writeFileSync(filePath, pokemonToString)
+                } else {
+                    pokemonList.push(pokemon)
+
+                    const pokemonToString = JSON.stringify(pokemonList)
+                    var filePath = 'data/localPokedex.json'
+                    fs.writeFileSync(filePath, pokemonToString)
+
+                }
 
             } else if (localPokedex === "N") {
                 process.exit()
@@ -59,9 +75,16 @@ function displayPoke() {
 
 function pokedex() {
     const readPokemon = fs.readFileSync('data/localPokedex.json')
-    const pokemons = JSON.parse(readPokemon)
+    if (readPokemon.length > 0) {
+        const pokemons = JSON.parse(readPokemon)
+        const pokeNames = pokemons.map((pokemon) => {
+            return pokemon.name
+        })
+        console.log('Pokedex:', pokeNames)
+    } else {
+        console.log("Pokedex vazia!")
+    }
 
-    console.log(pokemons)
 }
 
 function displayAbility() {
