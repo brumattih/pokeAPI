@@ -8,7 +8,7 @@ function menu() {
     console.log('Insira "A" para saber mais sobre um Pokemon')
     console.log('Insira "B" para saber mais sobre uma habilidade')
     console.log('Insira "C" para saber mais sobre um tipo')
-    console.log('Insira "POKEDEX" para saber mais sobre um tipo')
+    console.log('Insira "POKEDEX" para exibir a pokedex local')
     console.log('Insira "Z" para encerrar o programa')
 
     choice = user.question("Escolha : ").toUpperCase().trim()
