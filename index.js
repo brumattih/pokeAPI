@@ -14,6 +14,30 @@ function menu() {
     console.log('Insira "Z" para encerrar o programa')
 
     choice = user.question("Escolha : ").toUpperCase().trim()
+
+    if (choice === "A") {
+        console.clear()
+        displayPoke()
+    
+    } else if (choice === "B") {
+        console.clear()
+        displayAbility()
+    
+    } else if (choice === "C") {
+        console.clear()
+        displayType()
+    
+    } else if (choice === "POKEDEX") {
+        console.clear()
+        pokedex()
+    
+    } else if (choice === "Z") {
+        process.exit()
+    
+    } else {
+        console.log("Opção inválida\n")
+        menu()    
+    }
 }
 
 function displayPoke() {
@@ -44,6 +68,7 @@ function displayPoke() {
 
 
                 const readPokemon = fs.readFileSync('data/localPokedex.json')
+                //Verificando se a lista está cheia ou vazia
                 if (readPokemon.length > 0) {
                     const pokemonList = JSON.parse(readPokemon)
                     pokemonList.push(pokemon)
@@ -51,6 +76,9 @@ function displayPoke() {
                     const pokemonToString = JSON.stringify(pokemonList)
                     var filePath = 'data/localPokedex.json'
                     fs.writeFileSync(filePath, pokemonToString)
+
+                    console.log("Pokémon salvo com sucesso!")
+                    menu()
                 } else {
                     pokemonList.push(pokemon)
 
@@ -58,17 +86,22 @@ function displayPoke() {
                     var filePath = 'data/localPokedex.json'
                     fs.writeFileSync(filePath, pokemonToString)
 
+                    console.log("Pokémon salvo com sucesso!")
+                    menu()
                 }
 
             } else if (localPokedex === "N") {
                 process.exit()
             } else {
-                console.log("Opção inválida")
+                console.log("Opção inválida. Reiniciando o programa\n")
+                menu()
+                
             }
 
         })
         .catch(error => {
-            console.log(error, 'Pokémon inválido!')
+            console.log('Pokémon inválido!\n')
+            menu()
         })
 
 }
@@ -80,9 +113,11 @@ function pokedex() {
         const pokeNames = pokemons.map((pokemon) => {
             return pokemon.name
         })
-        console.log('Pokedex:', pokeNames)
+        console.log('Pokemons salvos na Pokedex:', pokeNames, '\n')
+        menu()
     } else {
-        console.log("Pokedex vazia!")
+        console.log("Pokedex vazia!\n")
+        menu()
     }
 
 }
@@ -95,9 +130,11 @@ function displayAbility() {
             const abilityName = result.data.effect_entries[0].effect
 
             console.log(abilityName)
+            menu()
         })
         .catch(error => {
-            console.log('Habilidade inválida!')
+            console.log('Habilidade inválida!\n')
+            menu()
         })
 }
 
@@ -121,37 +158,15 @@ function displayType() {
                 return double_damage.name
             })
 
-            console.log(`O tipo ${idNameType}:\nNão causa dano para o(s) tipo(s): ${noDamage}\nCausa metade de dano para o(s) tipo(s): ${halfDamage}\nCausa o dobro de dano para o(s) tipo(s): ${doubleDamage}`)
+            console.log(`O tipo ${idNameType}:\nNão causa dano para o(s) tipo(s): ${noDamage}\nCausa metade de dano para o(s) tipo(s): ${halfDamage}\nCausa o dobro de dano para o(s) tipo(s): ${doubleDamage}\n`)
+            menu()
         })
         .catch(error => {
-            console.log('Tipo inválido!')
+            console.log('Tipo inválido!\n')
+            menu()
         })
 }
-
 
 console.clear()
 menu()
 
-if (choice === "A") {
-    console.clear()
-    displayPoke()
-
-} else if (choice === "B") {
-    console.clear()
-    displayAbility()
-
-} else if (choice === "C") {
-    console.clear()
-    displayType()
-
-} else if (choice === "POKEDEX") {
-    console.clear()
-    pokedex()
-
-} else if (choice === "Z") {
-    process.exit()
-
-} else {
-    console.log("Opção inválida")
-
-}
